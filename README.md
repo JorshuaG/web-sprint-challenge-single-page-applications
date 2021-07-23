@@ -62,6 +62,7 @@ Your finished project must include all of the following requirements:
 - [ ] An Add to Order button that has an id of "order-button" and that submits form and returns a database record of name, size, toppings and special instructions
 
 Data should look something like
+
 ```
 {
     name: string,
@@ -71,6 +72,7 @@ Data should look something like
     special: string,
 }
 ```
+
 where there is a key for name, size and special and they are strings
 and
 there is a key for each of the toppings and they are booleans
@@ -105,11 +107,12 @@ One of your goals is to return a database record of the order - for this you'll 
 1. Create a new state
 2. Post to [reqres](https://reqres.in/) with `axios`
 3. Log data in console
-4. The URL you should use is `https://reqres.in/api/orders`. The tests are based on this URL.
+4. The URL you should use is `npx`. The tests are based on this URL.
 
 ## Submission format
 
 Follow these steps for completing your project.
 
 Set up your fork on Github to [submit via Codegrade](https://www.notion.so/lambdaschool/Submitting-an-assignment-via-Code-Grade-A-Step-by-Step-Walkthrough-07bd65f5f8364e709ecb5064735ce374), pushing commits to your `<firstName-lastName>` branch.
+
 - [ ] Your code will be reviewed over the next few days. Read [these instructions](https://www.notion.so/How-to-View-Feedback-in-CodeGrade-c5147cee220c4044a25de28bcb6bb54a) to learn how to view feedback in CodeGrade.

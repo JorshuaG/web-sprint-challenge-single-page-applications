@@ -60,7 +60,7 @@ function OrderForm(props) {
   };
 
   return (
-    <form onSubmit={(evt) => handleSubmit(evt)}>
+    <form id="pizza-form" onSubmit={(evt) => handleSubmit(evt)}>
       <h2>Build Your Own Pizza</h2>
       <label>
         Name:
