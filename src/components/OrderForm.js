@@ -1,13 +1,15 @@
+import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
 
 function OrderForm(props) {
   const [pizzaOrder, setPizzaOrder] = useState({
+    name: "",
     size: "",
     sauce: "",
     special: "",
+    toppings: [],
   });
-  const [toppings, setToppings] = useState([]);
 
   const handleChecklist = (evt) => {
     const toppingsSelected = Array.from(
@@ -18,9 +20,9 @@ function OrderForm(props) {
     });
     console.log("for toppings selected prior to set state", toppingsSelected);
 
-    setToppings(toppingsSelected);
+    setPizzaOrder({ ...pizzaOrder, toppings: toppingsSelected });
   };
-  console.log("toppings order after setToppings", toppings);
+  console.log("toppings order after setToppings", pizzaOrder);
 
   const handleInput = (evt) => {
     const target = evt.target;
@@ -30,15 +32,32 @@ function OrderForm(props) {
   };
   console.log("logged after handleinput", pizzaOrder);
 
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    // setPizzaOrder({ ...pizzaOrder, toppings: toppings });
+    axios.post("https://reqres.in/api/orders", pizzaOrder).then((resp) => {
+      console.log("after submit", resp.data);
+      setPizzaOrder({
+        name: "",
+        size: "",
+        sauce: "",
+        special: "",
+        toppings: [],
+      });
+    });
+  };
+
   return (
-    <form>
+    <form onSubmit={(evt) => handleSubmit(evt)}>
       <h2>Build Your Own Pizza</h2>
       <label>
         Name:
         <input
+          onChange={handleInput}
           id="name-input"
           type="text"
           placeholder="Name for the Order"
+          name="name"
         ></input>
       </label>
       <div>
@@ -176,6 +195,7 @@ function OrderForm(props) {
           </label>
           <label>
             <input
+              onChange={handleChecklist}
               className="toppings"
               value="Roasted Garlic"
               name="roastedGarlic"
@@ -203,6 +223,8 @@ function OrderForm(props) {
           id="special-text"
           placeholder="Any specials instructions?"
           type="text"
+          name="special"
+          onChange={handleInput}
         ></input>
       </div>
       <button id="order-button">Submit</button>
