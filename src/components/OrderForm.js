@@ -1,6 +1,8 @@
 import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
+import { reach } from "yup";
+import formSchema from "./SchemaForm";
 
 function OrderForm(props) {
   const [pizzaOrder, setPizzaOrder] = useState({
@@ -10,6 +12,15 @@ function OrderForm(props) {
     special: "",
     toppings: [],
   });
+  const initialNameErr = { name: "", size: "", sauce: "", special: "" };
+  const [nameErr, setNameError] = useState(initialNameErr);
+
+  const validate = (name, value) => {
+    reach(formSchema, name)
+      .validate(value)
+      .then(() => setNameError({ ...nameErr, [name]: "" }))
+      .catch((err) => setNameError({ ...nameErr, [name]: err.errors[0] }));
+  };
 
   const handleChecklist = (evt) => {
     const toppingsSelected = Array.from(
@@ -28,13 +39,14 @@ function OrderForm(props) {
     const target = evt.target;
     const value = target.type === "radio" ? target.value : target.value;
     const name = target.name;
+    validate(name, value);
     setPizzaOrder({ ...pizzaOrder, [name]: value });
   };
   console.log("logged after handleinput", pizzaOrder);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    // setPizzaOrder({ ...pizzaOrder, toppings: toppings });
+
     axios.post("https://reqres.in/api/orders", pizzaOrder).then((resp) => {
       console.log("after submit", resp.data);
       setPizzaOrder({
@@ -60,6 +72,7 @@ function OrderForm(props) {
           name="name"
         ></input>
       </label>
+      <div>{nameErr.name}</div>
       <div>
         <div class="formHeader">
           <h3>Choice of Size</h3>
@@ -73,6 +86,7 @@ function OrderForm(props) {
             <option value="large">Large</option>
           </select>
         </label>
+        <div>{nameErr.size}</div>
       </div>
 
       <div>
@@ -88,7 +102,8 @@ function OrderForm(props) {
             type="radio"
             name="sauce"
           ></input>
-        </label>
+        </label>{" "}
+        <div>{nameErr.sauce}</div>
         <label>
           Garlic Ranch:
           <input
